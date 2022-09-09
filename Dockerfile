@@ -10,8 +10,8 @@ RUN apt-get install -y gunicorn3
 
 RUN apt-get update -y
 
-COPY ./app /app
-WORKDIR /app
+COPY ./app /usr/src/app #/app
+WORKDIR /usr/src/app #/app
 
 # CMD [ "python", "./your-daemon-or-script.py" ]
 CMD ["gunicorn3", "-b", "0.0.0.0:80", "main:app"] # need to find way to reference variable for port 80 instead of hard coding here
