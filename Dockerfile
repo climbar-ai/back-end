@@ -6,9 +6,9 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 RUN apt-get update -y
 
-# RUN apt-get install -y gunicorn3
+RUN apt-get install -y gunicorn3
 
-# RUN apt-get update -y
+RUN apt-get update -y
 
 COPY ./app /app
 WORKDIR /app

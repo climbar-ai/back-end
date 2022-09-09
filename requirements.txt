@@ -1,4 +1,3 @@
 pyyaml
-gunicorn
 falcon
 falcon-cors
