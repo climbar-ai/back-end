@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3-buster
 LABEL maintainer="https://github.com/climbar-ai"
 
 COPY requirements.txt ./
