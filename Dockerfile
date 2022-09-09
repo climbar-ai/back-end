@@ -12,7 +12,7 @@ RUN apt-get install -y gunicorn3
 
 RUN apt-get update -y
 
-COPY ./app . #/app
+COPY ./app ./ #/app
 #WORKDIR /usr/src/app #/app
 
 # CMD [ "python", "./your-daemon-or-script.py" ]
