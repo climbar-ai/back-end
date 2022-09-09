@@ -16,5 +16,7 @@ COPY ./app ./
 #/app
 #WORKDIR /usr/src/app #/app
 
+RUN pwd && ls
+
 # CMD [ "python", "./your-daemon-or-script.py" ]
 CMD ["gunicorn3", "-b", "0.0.0.0:80", "main:app"] # need to find way to reference variable for port 80 instead of hard coding here
