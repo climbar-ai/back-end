@@ -10,7 +10,7 @@ RUN apt-get update -y
 
 # RUN apt-get update -y
 
-COPY ./app /app
+COPY ../app /app
 WORKDIR /app
 
 # CMD [ "python", "./your-daemon-or-script.py" ]
