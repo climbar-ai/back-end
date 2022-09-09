@@ -25,8 +25,10 @@ FROM python:alpine
 
 EXPOSE 80
 
-# Install gunicorn & falcon
-RUN pip3 install pyyaml falcon falcon-cors gunicorn 
+COPY requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+RUN apt-get install -y gunicorn3
 
 # Add demo app
 COPY ./app /app
