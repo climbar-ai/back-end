@@ -21,14 +21,12 @@
 ## CMD [ "python", "./your-daemon-or-script.py" ]
 #CMD ["gunicorn3", "-b", "0.0.0.0:80", "main:app"] # need to find way to reference variable for port 80 instead of hard coding here
 
-FROM python:3-alpine
+FROM python:buster
 
 EXPOSE 80
 
-COPY requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt
-
-RUN apt-get install -y gunicorn3
+# Install gunicorn & falcon
+RUN pip install pyyaml gunicorn falcon falcon-cors
 
 # Add demo app
 COPY ./app /app
