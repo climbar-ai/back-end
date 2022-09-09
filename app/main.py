@@ -1,5 +1,3 @@
-13 lines (7 sloc)  290 Bytes
-
 import falcon
 
 
