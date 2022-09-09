@@ -26,7 +26,7 @@ FROM python:alpine
 EXPOSE 80
 
 # Install gunicorn & falcon
-RUN pip install pyyaml gunicorn falcon falcon-cors
+RUN pip3 install pyyaml gunicorn falcon falcon-cors
 
 # Add demo app
 COPY ./app /app
