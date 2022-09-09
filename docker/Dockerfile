@@ -2,7 +2,7 @@ FROM python:3
 LABEL maintainer="https://github.com/climbar-ai"
 
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 RUN apt-get update -y
 
