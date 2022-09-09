@@ -21,7 +21,7 @@
 ## CMD [ "python", "./your-daemon-or-script.py" ]
 #CMD ["gunicorn3", "-b", "0.0.0.0:80", "main:app"] # need to find way to reference variable for port 80 instead of hard coding here
 
-FROM python:alpine
+FROM python:3-alpine
 
 EXPOSE 80
 
