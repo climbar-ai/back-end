@@ -23,13 +23,16 @@
 
 FROM python:buster
 
-EXPOSE 80
+#EXPOSE 80
 
 # Install gunicorn & falcon
-RUN pip install pyyaml gunicorn falcon falcon-cors
+#RUN pip install pyyaml gunicorn falcon falcon-cors
+COPY requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Add demo app
 COPY ./app /app
 WORKDIR /app
 
-CMD ["gunicorn", "-b", "0.0.0.0:80", "main:app"]
+#CMD ["gunicorn", "-b", "0.0.0.0:80", "main:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:${APP_PORT}", "main:app"]
