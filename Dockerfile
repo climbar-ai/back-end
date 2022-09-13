@@ -10,4 +10,4 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 COPY ./app /app
 WORKDIR /app
 
-CMD ["gunicorn", "-b", "0.0.0.0:80", "main:app"]
+CMD gunicorn -b 0.0.0.0:${APP_PORT} main:app
