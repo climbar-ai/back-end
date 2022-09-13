@@ -13,4 +13,6 @@ COPY ./app /app
 COPY ./config.sh /app/config.sh
 WORKDIR /app
 
+RUN ls -a
+
 CMD gunicorn -b 0.0.0.0:${APP_PORT} main:app
