@@ -6,6 +6,8 @@ LABEL maintainer="https://github.com/climbar-ai"
 
 ARG PORT
 
+RUN echo "$PORT"
+
 # Install gunicorn & falcon
 COPY requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt
