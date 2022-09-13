@@ -1,3 +1,5 @@
+# reference: https://github.com/berndverst/falcon-docker/blob/master/Dockerfile and https://github.com/climbar-ai/back-end/blob/main/Dockerfile
+
 FROM python:buster
 
 LABEL maintainer="https://github.com/climbar-ai"
