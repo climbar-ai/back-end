@@ -86,8 +86,8 @@ app.add_route('/', HelloWorldResource())
 app.add_route('/quote', QuoteResource())
 
 if __name__ == 'model_server':  
-        # we expect, as a hand-shake agreement, that there is a .yml config file in top level of lib/configs directory
-        config_dir = os.path.join('.')
-        yaml_path = os.path.join(config_dir, 'model_server.yml')
-        with open(yaml_path, "r") as stream:
-                config = yaml.load(stream)
+    # we expect, as a hand-shake agreement, that there is a .yml config file in top level of lib/configs directory
+    config_dir = os.path.join('.')
+    yaml_path = os.path.join(config_dir, 'model_server.yml')
+    with open(yaml_path, "r") as stream:
+        config = yaml.load(stream)

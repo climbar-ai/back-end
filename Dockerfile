@@ -4,6 +4,8 @@ FROM python:buster
 
 LABEL maintainer="https://github.com/climbar-ai"
 
+ARG APP_PORT
+
 # Install gunicorn & falcon
 COPY requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt
@@ -16,4 +18,5 @@ WORKDIR /app
 RUN ls -a
 
 #CMD gunicorn -b 0.0.0.0:${APP_PORT} main:app # find way to make this shell variable work
-CMD ["gunicorn", "-b", "0.0.0.0:80", "main:app"]
+#CMD ["gunicorn", "-b", "0.0.0.0:80", "main:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:${APP_PORT}", "main:app"]
