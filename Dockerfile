@@ -5,6 +5,7 @@ FROM python:buster
 LABEL maintainer="https://github.com/climbar-ai"
 
 ARG PORT
+ENV PORT $PORT
 
 RUN echo "$PORT"
 
