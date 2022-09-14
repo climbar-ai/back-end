@@ -16,7 +16,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Add demo app
 COPY ./app /app
-#COPY ./config.sh /app/config.sh
+COPY ./config.sh /app/config.sh
 WORKDIR /app
 
 RUN ls -a
