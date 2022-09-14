@@ -19,6 +19,7 @@ def start_server(host='', port=PORT):
     while True:
         sock_server, sockname = s.accept()
         print("Connection found -> sock_server: {}, sockname: {}".format(sock_server, sockname))
+        break
 
 
 def receiveTCP(sock):
