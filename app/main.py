@@ -29,13 +29,13 @@ def receiveTCP(sock):
 
 def stopAlarm(sock):
     print("'stop alarm' recieved")
-    sock.send("alarm stopped").encode(FORMAT);
+    sock.send("alarm stopped".encode(FORMAT));
     pass
 
 
 def startAlarm(sock):
     print("'start alarm' recieved")
-    sock.send("alarm started").encode(FORMAT);
+    sock.send("alarm started".encode(FORMAT));
     pass
 
 
