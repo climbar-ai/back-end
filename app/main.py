@@ -56,7 +56,7 @@ class Waiter(threading.Thread):
                         stopAlarm(sock_server)
                     elif message == 'start alarm':
                         startAlarm(sock_server)
-                    sock_server.close()
+                    #sock_server.close()
 
 if __name__ == '__main__':  
     ## we expect, as a hand-shake agreement, that there is a .yml config file in top level of lib/configs directory
