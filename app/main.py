@@ -1,93 +1,71 @@
-import falcon
-import json
+import socket
+import threading
 
-from falcon_cors import CORS
+IP = '0.0.0.0'
+PORT = 8081
+SIZE = 1024
+FORMAT = "utf-8"
+
+def start_server(host='', port=PORT):
+    global sock_server
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    s.bind((host, port))
+    s.listen()
+
+    print("host: {}".format(host))
+    print("port: {}".format(port))
+   
+    while True:
+        sock_server, sockname = s.accept()
+        print("Connection found -> sock_server: {}, sockname: {}".format(sock_server, sockname))
+        break
 
 
-class RequireJSON(object):
-
-    def process_request(self, req, resp):
-        if not req.client_accepts_json:
-            raise falcon.HTTPNotAcceptable(
-                'This API only supports responses encoded as JSON.',
-                href='http://docs.examples.com/api/json')
-
-        if req.method in ('POST', 'PUT'):
-            if 'application/json' not in req.content_type:
-                raise falcon.HTTPUnsupportedMediaType(
-                    'This API only supports requests encoded as JSON.',
-                    href='http://docs.examples.com/api/json')
+def receiveTCP(sock):
+    message = sock.recv(SIZE).decode(FORMAT)
+    return message
 
 
-class JSONTranslator(object):
+def stopAlarm(sock):
+    print("'stop alarm' recieved")
+    sock.send("alarm stopped").encode(FORMAT);
+    pass
 
-    def process_request(self, req, resp):
-        # req.stream corresponds to the WSGI wsgi.input environ variable,
-        # and allows you to read bytes from the request body.
-        #
-        # See also: PEP 3333
-        if req.content_length in (None, 0):
-            # Nothing to do
-            return
 
-        body = req.stream.read()
-        if not body:
-            raise falcon.HTTPBadRequest('Empty request body', 
-                                        'A valid JSON document is required.')
+def startAlarm(sock):
+    print("'start alarm' recieved")
+    sock.send("alarm started").encode(FORMAT);
+    pass
 
-        try:
-            req.context['doc'] = json.loads(body.decode('utf-8'))
 
-        except (ValueError, UnicodeDecodeError):
-            raise falcon.HTTPError(falcon.HTTP_753,
-                                   'Malformed JSON',
-                                   'Could not decode the request body. The '
-                                   'JSON was incorrect or not encoded as '
-                                   'UTF-8.')
+class Waiter(threading.Thread):
+    def __init__(self, **kwargs):
+        super(Waiter, self).__init__(**kwargs)
 
-    def process_response(self, req, resp, resource, req_succeeded):
-            if not hasattr(resp.context, 'result'):
-                    return
+    def run(self):
+        global sock_server
+        while True:
+            try:
+                message = receiveTCP(sock_server)
+            except Exception:
+                pass
+            else:
+                if message != '':
+                    if message == 'stop alarm':
+                        stopAlarm(sock_server)
+                    elif message == 'start alarm':
+                        startAlarm(sock_server)
+                    sock_server.close()
+                    break
 
-            resp.body = json.dumps(resp.context.result)
+if __name__ == '__main__':  
+    ## we expect, as a hand-shake agreement, that there is a .yml config file in top level of lib/configs directory
+    #config_dir = os.path.join('.')
+    #yaml_path = os.path.join(config_dir, 'main.yml')
+    #with open(yaml_path, "r") as stream:
+    #    config = yaml.load(stream)
 
-class HelloWorldResource:
-
-    def on_get(self, request, response):
-
-        response.media = ('Hello World from Falcon Python with' +
-                          ' Gunicorn running in an Alpine Linux container.')
-
-# Sample resource from the docs to test the api is running correctly.
-class QuoteResource:
-    def on_get(self, req, resp):
-        """Handles GET requests"""
-        quote = {
-            'quote': 'I\'ve always been more interested in the future than in the past.',
-            'author': 'Grace Hopper'
-        }
-
-        resp.body = json.dumps(quote)
-
-cors = CORS(
-    allow_all_origins=True,
-    allow_all_headers=True,
-    allow_all_methods=True
-)
-
-# this can't be in __main__ for some reason...TODO find out why
-app = falcon.API(middleware=[
-    RequireJSON(),
-    JSONTranslator(),
-    cors.middleware
-    ])
-
-app.add_route('/', HelloWorldResource())
-app.add_route('/quote', QuoteResource())
-
-if __name__ == 'model_server':  
-    # we expect, as a hand-shake agreement, that there is a .yml config file in top level of lib/configs directory
-    config_dir = os.path.join('.')
-    yaml_path = os.path.join(config_dir, 'model_server.yml')
-    with open(yaml_path, "r") as stream:
-        config = yaml.load(stream)
+    sock_server = None
+    start_server(IP, PORT) # pass the host and the port as parameters
+    Waiter().start() #start the thread which will wait for messages from client
