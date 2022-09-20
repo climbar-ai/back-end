@@ -58,24 +58,31 @@ def closeSock(sock):
 
 
 def receiveFilename(sock):
+    # receive filename
     filename = sock.recv(BUFFER_SIZE).decode(FORMAT)
     print("[RECV] Receiving the filename: {}".format(filename))
-    sock.send("Filename received.".encode(FORMAT))
     return filename
 
 
 def receiveFile(sock):
     # receive filename from client
     filename = receiveFilename(sock)
+    
+    # send confirmation of receipt
+    sock.send("received.".encode(FORMAT))
 
     # receive file data from client
     print("[RECV] Receiving the file data.")
     filepath = os.path.join(HOLD_CONFIGS_DIR, filename)
     with sock, open(filepath,'wb') as file:
         while True:
+            # read chunk of flie
             recvfile = sock.recv(BUFFER_SIZE) # don't decode here since file.write wants a bytes-like object instead of string
             if not recvfile: break
             file.write(recvfile)
+            
+            # send confirmation of receipt
+            sock.send("received.".encode(FORMAT))
     print("[RECV] File has been received: {}".format(filename))
 
 
