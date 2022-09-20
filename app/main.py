@@ -65,11 +65,14 @@ def receiveFilename(sock):
 
 
 def receiveFile(sock):
+    # let client know server is ready to receive
+    sock.send("ready");
+
     # receive filename from client
     filename = receiveFilename(sock)
     
     # send confirmation of receipt
-    sock.send("received".encode(FORMAT))
+    sock.send("ready".encode(FORMAT))
 
     # receive file data from client
     print("[RECV] Receiving the file data.")
@@ -82,7 +85,7 @@ def receiveFile(sock):
             file.write(recvfile)
             
             # send confirmation of receipt
-            sock.send("received".encode(FORMAT))
+            sock.send("ready".encode(FORMAT))
     print("[RECV] File has been received: {}".format(filename))
 
 
