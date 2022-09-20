@@ -73,7 +73,7 @@ def receiveFile(sock):
     filepath = os.path.join(HOLD_CONFIGS_DIR, filename)
     with sock, open(filepath,'wb') as file:
         while True:
-            recvfile = sock.recv(BUFFER_SIZE).decode(FORMAT)
+            recvfile = sock.recv(BUFFER_SIZE) # don't decode here since file.write wants a bytes-like object instead of string
             if not recvfile: break
             file.write(recvfile)
     print("[RECV] File has been received: {}".format(filename))
