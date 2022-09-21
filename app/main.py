@@ -66,7 +66,7 @@ def receiveFilename(sock):
 
 def receiveFile(sock):
     # let client know server is ready to receive
-    sock.send("ready");
+    sock.send("ready").encode(FORMAT);
 
     # receive filename from client
     filename = receiveFilename(sock)
