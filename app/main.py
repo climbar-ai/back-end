@@ -82,7 +82,6 @@ def receiveFile(sock):
             # read chunk of flie
             recvfile = sock.recv(BUFFER_SIZE) # don't decode here since file.write wants a bytes-like object instead of string
             if not recvfile or recvfile.decode(FORMAT) == "done": # break if the port is closed or client signals they are done
-                start_server(IP, PORT)
                 break
             file.write(recvfile)
             
@@ -131,6 +130,7 @@ class Waiter(threading.Thread):
                     elif message == 'sendFile':
                         sendFile(sock_server)
                     sock_server.close() # don't close here for now as this will prevent new messages from same connection coming through
+                    start_server(IP, PORT)
 
 if __name__ == '__main__':  
     ## we expect, as a hand-shake agreement, that there is a .yml config file in top level of lib/configs directory
