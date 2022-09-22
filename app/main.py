@@ -130,7 +130,7 @@ class Waiter(threading.Thread):
                         receiveFile(sock_server)
                     elif message == 'sendFile':
                         sendFile(sock_server)
-                    #sock_server.close() # don't close here for now as this will prevent new messages from same connection coming through
+                    sock_server.close() # don't close here for now as this will prevent new messages from same connection coming through
 
 if __name__ == '__main__':  
     ## we expect, as a hand-shake agreement, that there is a .yml config file in top level of lib/configs directory
