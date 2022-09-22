@@ -113,6 +113,7 @@ class Waiter(threading.Thread):
         global sock_server
         while True:
             try:
+                print("Waiting for message...")
                 message = receiveTCP(sock_server)
             except Exception:
                 pass
