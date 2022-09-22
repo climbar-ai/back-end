@@ -118,6 +118,7 @@ class Waiter(threading.Thread):
             except Exception:
                 pass
             else:
+                print("message: {}".format(message))
                 if message != '':
                     if message == 'stopAlarm':
                         stopAlarm(sock_server)
