@@ -81,7 +81,7 @@ def receiveFile(sock):
         while True:
             # read chunk of flie
             recvfile = sock.recv(BUFFER_SIZE) # don't decode here since file.write wants a bytes-like object instead of string
-            if not recvfile or recvfile.decode(FORMAT) == "done": # break if the port is closed or client signals they are done
+            if not recvfile or recvfile == "done": # break if the port is closed or client signals they are done
                 break
             file.write(recvfile + "\n")
             
