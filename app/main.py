@@ -129,7 +129,7 @@ class Waiter(threading.Thread):
                         receiveFile(sock_server)
                     elif message == 'sendFile':
                         sendFile(sock_server)
-                    sock.send("ready".encode(FORMAT))
+                    sock_server.send("ready".encode(FORMAT))
 
 if __name__ == '__main__':  
     ## we expect, as a hand-shake agreement, that there is a .yml config file in top level of lib/configs directory
