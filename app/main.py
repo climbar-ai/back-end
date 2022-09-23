@@ -77,7 +77,7 @@ def receiveFile(sock):
     # receive file data from client
     print("[RECV] Receiving the file data.")
     filepath = os.path.join(HOLD_CONFIGS_DIR, filename)
-    with sock, open(filepath,'wb') as file:
+    with open(filepath,'wb') as file:
         while True:
             # read chunk of flie
             recvfile = sock.recv(BUFFER_SIZE) # don't decode here since file.write wants a bytes-like object instead of string
