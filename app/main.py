@@ -10,6 +10,9 @@ import os
 import socket
 import threading
 
+from os import listdir
+from os.path import isfile, join
+
 IP = '0.0.0.0'
 PORT = 8081
 BUFFER_SIZE = 1024
@@ -57,6 +60,7 @@ def closeSock(sock):
     start_server(IP, PORT)
 
 
+# server receives a filename from client
 def receiveFilename(sock):
     # receive filename
     filename = sock.recv(BUFFER_SIZE).decode(FORMAT)
@@ -64,6 +68,7 @@ def receiveFilename(sock):
     return filename
 
 
+# server receives a file sent by client
 def receiveFile(sock):
     # let client know server is ready to receive
     sock.send("ready".encode(FORMAT));
@@ -102,9 +107,19 @@ def sendFile(sock):
     with sock, open(filepath,'rb') as f:
         data = f.read()
         sock.sendall(data)
-    print("[RECV] File has been sent {}".format(filename))   
+    print("[RECV] File has been sent {}".format(filename)) 
+    
+
+def listFiles(sock):
+    # get list of only files in directory
+    onlyFiles = [f for f in listdir(HOLD_CONFIGS_DIR) if isfile(join(HOLD_CONFIGS_DIR, f))]
+  
+    # send list of files to client
+    sock.send(onlyFiles.encode(FORMAT))
+    print("[RECV] Files have been sent: {}".format(onlyFiles))
 
 
+# endpoints are phrased in context of client telling server what it wants the server to do
 class Waiter(threading.Thread):
     def __init__(self, **kwargs):
         super(Waiter, self).__init__(**kwargs)
@@ -129,7 +144,8 @@ class Waiter(threading.Thread):
                         receiveFile(sock_server)
                     elif message == 'sendFile':
                         sendFile(sock_server)
-                    #sock_server.send("ready".encode(FORMAT))
+                    elif message == 'listFiles':
+                        listFiles(sock_server)
 
 if __name__ == '__main__':  
     ## we expect, as a hand-shake agreement, that there is a .yml config file in top level of lib/configs directory
