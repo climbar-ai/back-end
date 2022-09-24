@@ -126,7 +126,7 @@ def listFiles(sock):
         else:
             print("[RECV] bad response: {}".format(response))
     
-    sock("done".encode(FORMAT))
+    sock.send("done".encode(FORMAT))
     print("[RECV] Files have been sent: {}".format(onlyFiles))
 
 
