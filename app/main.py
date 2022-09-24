@@ -114,8 +114,19 @@ def listFiles(sock):
     # get list of only files in directory
     onlyFiles = [f for f in listdir(HOLD_CONFIGS_DIR) if isfile(join(HOLD_CONFIGS_DIR, f))]
   
-    # send list of files to client
-    sock.send(onlyFiles.encode(FORMAT))
+     # send list of files to client
+    for f in onlyFiles:
+        # send filename
+        sock.send(f.encode(FORMAT))
+
+        # wait for response
+        response = sock.recv(BUFFER_SIZE).decode(FORMAT)
+        if response == "ready":
+            continue
+        else:
+            print("[RECV] bad response: {}".format(response))
+    
+    sock("done".encode(FORMAT))
     print("[RECV] Files have been sent: {}".format(onlyFiles))
 
 
