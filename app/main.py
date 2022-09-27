@@ -99,15 +99,26 @@ def sendFile(sock):
     # receive filename from client
     filename = receiveFilename(sock)
 
-    # send the filename to client
-    sock.sendall(filename.encode(FORMAT))
+    # send confirmation of receipt
+    sock.send("ready".encode(FORMAT))
 
     # send the file to client
     filepath = os.path.join(HOLD_CONFIGS_DIR, filename)
-    with sock, open(filepath,'rb') as f:
-        data = f.read()
-        sock.sendall(data)
-    print("[RECV] File has been sent {}".format(filename)) 
+    with open(filepath,'rb') as f:
+        for line in f:
+            line = line.rstrip()
+            sock.sendall(line)
+
+            # wait for response
+            response = sock.recv(BUFFER_SIZE).decode(FORMAT)
+            if response == "ready":
+                continue
+            else:
+                print("[RECV] bad response: {}".format(response))
+                return
+
+    sock.send("done".encode(FORMAT))
+    print("[RECV] Files have been sent: {}".format(filename))
     
 
 def listFiles(sock):
@@ -125,6 +136,7 @@ def listFiles(sock):
             continue
         else:
             print("[RECV] bad response: {}".format(response))
+            return
     
     sock.send("done".encode(FORMAT))
     print("[RECV] Files have been sent: {}".format(onlyFiles))
@@ -145,11 +157,7 @@ class Waiter(threading.Thread):
             else:
                 print("message: {}".format(message))
                 if message != '':
-                    if message == 'stopAlarm':
-                        stopAlarm(sock_server)
-                    elif message == 'startAlarm':
-                        startAlarm(sock_server)
-                    elif message == 'closeSock':
+                    if message == 'closeSock':
                         closeSock(sock_server)
                     elif message == 'receiveFile':
                         receiveFile(sock_server)
