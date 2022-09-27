@@ -102,9 +102,6 @@ def sendFile(sock):
     # receive filename from client
     filename = receiveFilename(sock)
 
-    # send confirmation of receipt
-    sock.send("ready".encode(FORMAT))
-
     # send the file to client
     filepath = os.path.join(HOLD_CONFIGS_DIR, filename)
     with open(filepath,'rb') as f:
