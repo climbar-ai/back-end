@@ -96,6 +96,9 @@ def receiveFile(sock):
 
 
 def sendFile(sock):
+    # let client know server is ready to receive
+    sock.send("ready".encode(FORMAT));
+
     # receive filename from client
     filename = receiveFilename(sock)
 
