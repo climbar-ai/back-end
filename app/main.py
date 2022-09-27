@@ -110,7 +110,7 @@ def sendFile(sock):
     with open(filepath,'rb') as f:
         for line in f:
             line = line.rstrip()
-            sock.sendall(line)
+            sock.send(line.encode(FORMAT))
 
             # wait for response
             response = sock.recv(BUFFER_SIZE).decode(FORMAT)
