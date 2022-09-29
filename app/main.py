@@ -17,7 +17,7 @@ IP = '0.0.0.0'
 PORT = 8081
 BUFFER_SIZE = 1024
 FORMAT = "utf-8"
-HOLD_CONFIGS_DIR = '/share/hold-configurations'
+HOLD_CONFIGS_DIR = '/share/routes'
 
 def start_server(host='', port=PORT):
     global sock_server
@@ -39,17 +39,6 @@ def receiveTCP(sock):
     message = sock.recv(BUFFER_SIZE).decode(FORMAT)
     return message
 
-
-def stopAlarm(sock):
-    print("'stop alarm' recieved")
-    sock.send("alarm stopped".encode(FORMAT))
-    pass
-
-
-def startAlarm(sock):
-    print("'start alarm' recieved")
-    sock.send("alarm started".encode(FORMAT))
-    pass
 
 def closeSock(sock):
     print("'close sock' recieved")
