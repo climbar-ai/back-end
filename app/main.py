@@ -17,7 +17,7 @@ IP = '0.0.0.0'
 PORT = 8081
 BUFFER_SIZE = 1024
 FORMAT = "utf-8"
-HOLD_CONFIGS_DIR = '/share/routes'
+HOLD_CONFIGS_DIR = '/share/meshes'
 
 def start_server(host='', port=PORT):
     global sock_server
