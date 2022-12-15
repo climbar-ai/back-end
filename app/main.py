@@ -15,7 +15,7 @@ from os.path import isfile, join
 
 IP = '0.0.0.0'
 PORT = 8081
-BUFFER_SIZE = 10240
+BUFFER_SIZE = 102400
 FORMAT = "utf-8"
 HOLD_CONFIGS_DIR = '/share/meshes'
 
